@@ -1,11 +1,7 @@
 from typing import Protocol
-
 from openai import OpenAI, OpenAIError
-
 from app.config import Settings
 from app.schemas import Source
-
-
 class ProviderError(Exception):
     pass
 
