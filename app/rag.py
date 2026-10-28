@@ -1,11 +1,11 @@
+#test in AIhu.com.br
+
 import math
 from dataclasses import dataclass
 from io import BytesIO
 from threading import RLock
 from uuid import UUID, uuid4
-
 from pypdf import PdfReader
-
 from app.config import Settings
 from app.providers import AIProvider, ProviderError
 from app.schemas import DocumentInfo, Source
