@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram name="HLD" id="hld">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageWidth="1200" pageHeight="800">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="client" value="Local API client / Swagger UI" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="40" y="50" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="FastAPI / API-key authentication" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="350" y="50" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="parse" value="PDF extraction + overlapping chunks" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="40" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="embedding" value="OpenAI embeddings (external)" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="350" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="memory" value="In-memory document vectors" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="660" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="graph" value="LangGraph retrieval / conditional routing" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="350" y="430" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="answer" value="OpenAI answer model (external)" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="660" y="430" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="PDF / question + document ID" parent="1" edge="1" source="client" target="api" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="Upload" parent="1" edge="1" source="api" target="parse" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="Text passages" parent="1" edge="1" source="parse" target="embedding" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="Vectors" parent="1" edge="1" source="embedding" target="memory" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="Chat" parent="1" edge="1" source="api" target="graph" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-5" value="Document-scoped retrieval" parent="1" edge="1" source="memory" target="graph" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-6" value="Evidence available only" parent="1" edge="1" source="graph" target="answer" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-7" value="Answer / fallback + sources" parent="1" edge="1" source="graph" target="client" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="UML Request Flow" id="uml-request-flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageWidth="1200" pageHeight="800">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="auth" value="1. Validate API key and ChatRequest" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="40" y="60" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lookup" value="2. Resolve selected document or 404" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="350" y="60" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="embed" value="3. Embed question; provider failure -&gt; 503" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="660" y="60" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve" value="4. Cosine similarity + threshold + top-k" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="660" y="250" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="route" value="5. LangGraph conditional edge" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="350" y="250" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fallback" value="No hits: fallback; skip answer model" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="40" y="430" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="generate" value="Hits: generate from excerpts + sources" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="660" y="430" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="" parent="1" edge="1" source="auth" target="lookup" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="" parent="1" edge="1" source="lookup" target="embed" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="" parent="1" edge="1" source="embed" target="retrieve" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="" parent="1" edge="1" source="retrieve" target="route" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="No evidence" parent="1" edge="1" source="route" target="fallback" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-5" value="Evidence" parent="1" edge="1" source="route" target="generate" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Data Model - No Relational DB" id="data-model---no-relational-db">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageWidth="1200" pageHeight="800">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="document" value="Document (memory only)&#10;document_id: UUID&#10;filename / pages / chunks count" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="100" y="120" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="chunk" value="Chunk (memory only)&#10;chunk_id / page / text&#10;normalized embedding vector" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="500" y="120" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="No SQL tables, PK/FK migrations or tenant records.&#10;All state is lost on process restart." parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;">
+          <mxGeometry x="300" y="340" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="1 contains many; deleted together" parent="1" edge="1" source="document" target="chunk" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
